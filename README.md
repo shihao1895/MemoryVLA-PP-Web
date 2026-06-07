@@ -1,4 +1,4 @@
-# MemoryVLA
+# MemoryVLA++
 This is the repository that contains source code for the [MemoryVLA++ website](https://shihao1895.github.io/MemoryVLA-PP-Web).
 
 # Thanks
