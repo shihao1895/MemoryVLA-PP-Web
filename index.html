@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="MemoryVLA++: Temporal Modeling via Memory and Imagination in Vision-Language-Action Models">
+  <meta name="keywords" content="Embodied AI, Vision-Language-Action (VLA) Models, Memory, World Model, Robotic Manipulation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>MemoryVLA++</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css?v=20260608-module-images">
+  <link rel="icon" href="./static/images/icon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js?v=20260608-video-autoplay"></script>
+
+  <style>
+    .top-more-research {
+      background: transparent;
+      position: fixed;
+      left: 2rem;
+      top: 1.5rem;
+      z-index: 20;
+    }
+
+    .top-more-research details {
+      position: relative;
+    }
+
+    .top-more-research summary {
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e2e6ed;
+      border-radius: 999px;
+      box-shadow: 0 8px 24px rgba(10, 10, 10, 0.08);
+      color: #3a3a3a;
+      cursor: pointer;
+      display: flex;
+      font-family: "Google Sans", sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      gap: 0.65rem;
+      line-height: 1.5;
+      list-style: none;
+      padding: 0.55rem 0.9rem;
+      user-select: none;
+    }
+
+    .top-more-research summary:hover {
+      border-color: #b8d0ff;
+      color: #276ef1;
+    }
+
+    .top-more-research summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .top-more-research summary::after {
+      border: solid currentColor;
+      border-width: 0 2px 2px 0;
+      content: "";
+      display: inline-block;
+      padding: 4px;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    .top-more-research details[open] summary::after {
+      transform: rotate(-135deg);
+    }
+
+    .top-more-research .more-research-dropdown {
+      background: #fff;
+      border: 1px solid #e2e6ed;
+      border-radius: 8px;
+      box-shadow: 0 14px 32px rgba(10, 10, 10, 0.12);
+      left: 0;
+      margin-top: 0.5rem;
+      min-width: 11rem;
+      padding: 0.25rem 0;
+      position: absolute;
+    }
+
+    .top-more-research .more-research-dropdown a {
+      color: #3a3a3a;
+      display: block;
+      font-family: "Google Sans", sans-serif;
+      font-size: 0.95rem;
+      padding: 0.65rem 0.9rem;
+      white-space: nowrap;
+    }
+
+    .top-more-research .more-research-dropdown a:hover {
+      background: #f5f5f5;
+      color: #276ef1;
+    }
+
+    .page-toc {
+      background: rgba(255, 255, 255, 0.96);
+      font-family: "Google Sans", sans-serif;
+      z-index: 15;
+    }
+
+    .page-toc a {
+      color: #4a4a4a;
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.25;
+      padding: 0.45rem 0.75rem;
+      white-space: nowrap;
+    }
+
+    .page-toc a:hover {
+      color: #276ef1;
+    }
+
+    .page-toc a.toc-sub {
+      color: #6a6a6a;
+      font-size: 0.86rem;
+    }
+
+    .page-toc a.toc-sub-2 {
+      color: #777;
+      font-size: 0.8rem;
+    }
+
+    .section-anchor {
+      scroll-margin-top: 5rem;
+    }
+
+    @media screen and (min-width: 1280px) {
+      .page-toc {
+        border-left: 2px solid #f0f0f0;
+        left: 2rem;
+        position: fixed;
+        top: 8rem;
+        width: 11rem;
+      }
+
+      .page-toc a {
+        border-left: 2px solid transparent;
+        margin-left: -2px;
+      }
+
+      .page-toc a:hover {
+        border-left-color: #276ef1;
+      }
+
+      .page-toc a.toc-sub {
+        padding-left: 1.4rem;
+      }
+
+      .page-toc a.toc-sub-2 {
+        padding-left: 2.1rem;
+      }
+    }
+
+    @media screen and (max-width: 1279px) {
+      .top-more-research {
+        background: #fff;
+        padding: 0.75rem 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 30;
+      }
+
+      .page-toc {
+        border-bottom: 1px solid #f0f0f0;
+        box-shadow: 0 4px 14px rgba(10, 10, 10, 0.04);
+        display: flex;
+        gap: 0.25rem;
+        overflow-x: auto;
+        padding: 0.35rem 0.75rem;
+        position: sticky;
+        top: 3.5rem;
+      }
+
+      .page-toc a {
+        border-radius: 4px;
+      }
+
+      .page-toc a:hover {
+        background: #f5f5f5;
+      }
+
+      .page-toc a.toc-sub {
+        background: #fafafa;
+      }
+
+      .page-toc a.toc-sub-2 {
+        background: #fff;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+<nav class="top-more-research" role="navigation" aria-label="more research">
+  <details>
+    <summary>More Research</summary>
+    <div class="more-research-dropdown">
+      <a href="https://shihao1895.github.io/MemoryVLA">MemoryVLA</a>
+      <a href="https://shihao1895.github.io/SpatialActor">SpatialActor</a>
+      <a href="https://dexbotic.com">Dexbotic</a>
+    </div>
+  </details>
+</nav>
+
+<nav class="page-toc" aria-label="section navigation">
+  <a href="#main-idea">Main Idea</a>
+  <a href="#abstract">1 Abstract</a>
+  <a href="#motivation">2 Motivation</a>
+  <a href="#method">3 Method</a>
+  <a class="toc-sub" href="#framework">3.1 Framework</a>
+  <a class="toc-sub" href="#modules">3.2 Modules</a>
+  <a class="toc-sub-2" href="#memory-module">3.2.1 Memory</a>
+  <a class="toc-sub-2" href="#imagination-module">3.2.2 Imagination</a>
+  <a class="toc-sub-2" href="#action-expert">3.2.3 Action</a>
+  <a href="#experiment">4 Experiment</a>
+  <a class="toc-sub" href="#experiment-setup">4.1 Overview</a>
+  <a class="toc-sub" href="#real-robot">4.2 Robot Setup</a>
+  <a class="toc-sub" href="#real-robot-evaluation">4.3 Real Robot</a>
+  <a class="toc-sub" href="#simulation">4.4 Simulation</a>
+  <a href="#BibTeX">BibTeX</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">MemoryVLA++: Temporal Modeling via Memory and Imagination in Vision-Language-Action Models</h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://shihao1895.github.io">Hao Shi</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Weiye Li</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=em-nmLIAAAAJ">Bin Xie</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=gBP38gcAAAAJ">Yulin Wang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=zNc7Eg8AAAAJ">Renping Zhou</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=YI0sRroAAAAJ">Tiancai Wang</a><sup>3</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=yuB-cfoAAAAJ">Xiangyu Zhang</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=aXdjxb4AAAAJ">Ping Luo</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=-P9LwcgAAAAJ">Gao Huang</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>THU LeapLab,</span>
+            <span class="author-block"><sup>2</sup>HKU MMLab,</span>
+            <span class="author-block"><sup>3</sup>Dexmal,</span>
+            <span class="author-block"><sup>4</sup>StepFun</span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block">shihao1895@gmail.com</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="static/files/MemoryVLA_pp_paper.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Arxiv Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/shihao1895/MemoryVLA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- HuggingFace -->
+              <span class="link-block">
+                <a href="https://huggingface.co/collections/shihao1895/memoryvla"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <img src="static/images/huggingface_logo.svg" alt="Hugging Face" style="height: 1em; vertical-align: middle;">
+                  <span>Models</span>
+                  </a>
+              </span>
+              <!-- ICLR Version -->
+              <span class="link-block">
+                <a href="https://shihao1895.github.io/MemoryVLA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-book-open"></i>
+                  </span>
+                  <span>ICLR Version</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Intro-->
+<section class="hero teaser section-anchor" id="main-idea">
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <!-- <h2 class="title is-3">Introduction</h2> -->
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">Main Idea</h2>
+        <img src="static/images/fig_idea.png" style="width:100%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6" style="margin-top:1rem;">
+          <b>Comparison of the main ideas.</b>
+          <b>MemoryVLA++</b> is the extended journal version of
+          <a href="https://shihao1895.github.io/MemoryVLA"><b>MemoryVLA</b></a>.
+          We compare three paradigms:
+          (1) <b>typical VLAs</b> are reactive and rely only on the present observation,
+          (2) <b>MemoryVLA</b> introduces a working memory-episodic memory mechanism to capture past temporal dependencies,
+          and (3) <b>MemoryVLA++</b> further extends this by incorporating future imagination via a world model for full temporal modeling.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Abstract -->
+<section class="section section-anchor" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-left">1 Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Temporal modeling is essential for robotic manipulation, as effective control requires both memory of past interactions and imagination of future states.
+            However, most VLA models rely primarily on the current observation and therefore struggle with long-horizon, temporally dependent tasks.
+            Cognitive science suggests that humans rely on working memory to buffer short-lived context, the hippocampal system to preserve episodic memory of past experience, and internal models to imagine possible future state evolution.
+          </p>
+          <p>
+            Inspired by these mechanisms, we propose <b>MemoryVLA++</b>, <b>a full temporal modeling framework that equips VLA models with memory and imagination for robotic manipulation</b>.
+            A pretrained VLM encodes the current observation into perceptual and cognitive tokens, forming working memory.
+            These tokens query a Perceptual-Cognitive Memory Bank to retrieve relevant historical context.
+            This bank stores low-level details and high-level semantics from past interactions, and is updated through redundancy-aware consolidation.
+            A world model imagines future states in a denoising latent space, and the imagined latents are integrated under memory guidance to form full temporal-aware tokens.
+            The resulting tokens condition a diffusion action expert to predict temporally consistent action sequences.
+          </p>
+          <p>
+            We conduct extensive experiments on 5 simulation benchmarks and 3 categories of real-robot tasks across 3 robots, covering general manipulation, long-horizon temporal tasks, robustness, and generalization.
+            Our method achieves strong performance across Libero, SimplerEnv, Mikasa-Robo, Calvin, Libero-Plus, and diverse real-robot tasks, validating the effectiveness of full temporal modeling with memory and imagination.
+            For example, on real robots, it achieves +9% gains on general manipulation, +26% on long-horizon memory-dependent tasks, and +28% on long-horizon imagination-dependent tasks.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Motivation -->
+<section class="hero teaser section-anchor" id="motivation">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">2 Motivation</h2>
+      </div>
+      <div style="width:80%; margin:0 auto;">
+        <img src="static/images/fig_motivation.png"
+             style="width:100%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6"
+           style="margin-top:1rem; margin-bottom:2.5rem;">
+          <b>Motivation of MemoryVLA++.</b>
+          (a) Button pressing shows the need for memory: similar visual states before and after pressing make it hard to know whether the button has already been pressed.
+          Dynamic-conveyor grasping shows the need for imagination: predicting future object motion helps grasp at the right time.
+          (b) Humans leverage the hippocampal system to maintain working-episodic memory, and use internal models to imagine future state evolution.
+          (c) Inspired by these, MemoryVLA++ enables full temporal modeling in VLA models by combining present perception, past memory, and future imagination.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Framework -->
+<section class="hero teaser section-anchor" id="method">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">3 Method</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser section-anchor" id="framework">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">3.1 Framework</h2>
+      </div>
+      <div style="width:80%; margin:0 auto;">
+        <img src="static/images/fig_overall.png"
+             style="width:100%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6 "
+           style="margin-top:1rem; margin-bottom:2.5rem;">
+          <b>Overall architecture.</b>
+          The current RGB observation and language instruction are encoded by a 7B VLM into perceptual and cognitive tokens, forming working memory.
+          The working memory queries a Perceptual-Cognitive Memory Bank (PCMB) to retrieve relevant historical context with high-level semantics and low-level details.
+          The retrieved context is adaptively fused with current tokens, while the PCMB is updated by merging the most similar neighbors.
+          A world model imagines future states in a denoising latent space, and the imagined latents are integrated under memory guidance to form full temporal-aware tokens.
+          These tokens condition a diffusion action expert to predict temporally coherent action sequences.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modules -->
+<section class="hero teaser section-anchor" id="modules">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:75%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">3.2 Module Details</h2>
+      </div>
+      <div style="width:75%; margin:0 auto;">
+        <h3 class="title is-4 mt-4 has-text-left section-anchor" id="memory-module">3.2.1 Memory Module</h3>
+        <img class="module-detail-image" src="static/images/fig_modules_mem.png"
+             style="width:100%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6 "
+           style="margin-top:1rem; margin-bottom:2.5rem;">
+          <b>Details of memory module.</b>
+          (a) <b>Retrieval:</b> current perceptual and cognitive tokens query the PCMB via cross-attention with timestep PE to fetch relevant historical context.
+          (b) <b>Gate fusion:</b> current tokens and retrieved histories are adaptively fused through a gating mechanism.
+          (c) <b>Consolidation:</b> the current tokens are written back to the PCMB.
+          When the PCMB reaches capacity, the most similar adjacent entries are merged to keep the memory compact.
+        </p>
+        <h3 class="title is-4 mt-4 has-text-left section-anchor" id="imagination-module">3.2.2 Imagination Module</h3>
+        <img class="module-detail-image" src="static/images/fig_modules_imag.png"
+             style="width:100%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6 "
+           style="margin-top:1rem; margin-bottom:2.5rem;">
+          <b>Details of imagination module.</b>
+          (a) <b>Imagination generation:</b> conditioned on the current observation and instruction, the world model denoises multi-scale future latent tokens, followed by spatial and temporal attention to capture decision-relevant future state evolution.
+          (b) <b>Memory-guided imagination integration:</b> memory-aware tokens attend to imagined latents and adaptively fuse future cues to form full temporal-aware tokens.
+        </p>
+        <h3 class="title is-4 mt-4 has-text-left section-anchor" id="action-expert">3.2.3 Action Expert</h3>
+        <img class="module-detail-image action-expert-image" src="static/images/fig_action_expert.png"
+             style="width:40%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6 "
+           style="margin-top:1rem; margin-bottom:2.5rem;">
+          <b>Details of full temporal-aware action expert.</b>
+          During diffusion denoising, noisy action tokens are concatenated with cognitive token for cognition attention, while perception attention captures fine-grained details from perceptual tokens for temporally consistent action generation.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experimental Setup -->
+<section class="hero teaser section-anchor" id="experiment">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">4 Experiment</h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser section-anchor" id="experiment-setup">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">4.1 Experimental Overview</h2>
+      </div>
+      <div style="width:80%; margin:0 auto;">
+        <img src="static/images/fig_exp_setup.png"
+             style="width:100%; height:auto; margin-bottom:1rem;">
+        <p class="has-text-justified is-size-6"
+           style="margin-top:1rem; margin-bottom:2.5rem;">
+          <b>Experimental setup overview.</b> 
+          Top: simulation evaluation, covering general manipulation (Libero and SimplerEnv), long-horizon temporal manipulation (Mikasa-Robo and Calvin), and robustness &amp; generalization evaluation (Libero-Plus).
+          Bottom: real-robot evaluation on general tasks, long-horizon memory-dependent tasks, long-horizon imagination-dependent tasks, and robustness &amp; generalization settings.
+          Overall, our evaluation spans 3 robots, 5 simulation benchmarks, and 3 categories of real-robot tasks, covering nearly 200 tasks with extensive variations.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Real Robots Setup -->
+<section class="hero teaser section-anchor" id="real-robot">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-centered">
+      <div style="width:80%; margin:0 auto;">
+        <h2 class="title is-3 mb-5 has-text-left">4.2 Real Robot Setup</h2>
+      </div>
+      <div style="width:80%; margin:0 auto;">
+        <img src="static/images/fig_robot.png"
+             style="width:100%; height:auto; margin-bottom:1rem;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Video -->
+<section class="section video-section">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths has-text-left">
+      <!-- Real -->
+      <div class="video-section-heading section-anchor" id="real-robot-evaluation">
+        <h2 class="title is-3 mb-5 has-text-left">4.3 Real Robot Evaluation</h2>
+      </div>
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">General Tasks</span>
+        </button>
+      </div>
+      <div class="video-panel">
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/1_InsertCircle.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Insert Circle</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/2_PutEggInPan.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Put Egg in Pan</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/3_PutEggInOven.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Put Egg in Oven</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/4_StackCup.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Stack Cups</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/5_StackBlock.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Stack Blocks</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/6_PickDiverseFruits_apple.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Pick Diverse Fruits (apple)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/6_PickDiverseFruits_banana.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Pick Diverse Fruits (banana)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/6_PickDiverseFruits_carrot.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Pick Diverse Fruits (carrot)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/6_PickDiverseFruits_chili.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Pick Diverse Fruits (chili)</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/General/6_PickDiverseFruits_grape.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Pick Diverse Fruits (grape)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Memory Tasks</span>
+        </button>
+      </div>
+      <div class="video-panel">
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/Memory/7_SeqPushButtons.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Sequential Push Buttons</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/Memory/8_ChangeFood.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Change Food</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/Memory/9_GuessWhere.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Guess Where</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/Memory/10_CleanTableCount.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Clean Table &amp; Count</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/Memory/11_PickPlaceOrder.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Pick Place Order</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Real/Memory/12_CleanRestaurantTable.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Clean Restaurant Table</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Imagination Tasks</span>
+        </button>
+      </div>
+      <div class="video-panel">
+        <p class="is-size-6">No videos found in <code>static/videos/Real/Imagination</code>.</p>
+      </div>
+
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Robustness &amp; Generalization</span>
+        </button>
+      </div>
+      <div class="video-panel">
+        <!-- Pick Place Order -->
+        <h3 class="title is-4 mt-4">Pick Place Order</h3>
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/base.mp4" type="video/mp4"></video><p class="is-size-6">Base</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/background.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Background</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/distractors.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Distractors</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/lighting.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Lighting</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/object.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Object</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/container.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Container</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_PickPlaceOrder/occlusion.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Occlusion</p></div>
+        </div>
+
+        <!-- Clean Restaurant Table -->
+        <h3 class="title is-4 mt-4">Clean Restaurant Table</h3>
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/base.mp4" type="video/mp4"></video><p class="is-size-6">Base</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/background.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Background</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/distractors.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Distractors</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/lighting.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Lighting</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/object.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Object</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/container.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Container</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Real/OOD/Real_CleanRestaurantTable/occlusion.mp4" type="video/mp4"></video><p class="is-size-6">Unseen Occlusion</p></div>
+        </div>
+      </div>
+
+      <!-- SimplerEnv -->
+      <div class="video-section-heading section-anchor" id="simulation">
+        <h2 class="title is-3 mb-5 has-text-left">4.4 Simulation Evaluation</h2>
+      </div>
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">SimplerEnv</span>
+        </button>
+      </div>
+      <div class="video-panel">
+        <!-- Bridge -->
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/SimplerEnv/SpoonOnTowel.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Put Spoon on Towel</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/SimplerEnv/CarrotOnPlate.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Put Carrot on Plate</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/SimplerEnv/StackCube.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Stack Cube</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/SimplerEnv/EggplantInBasket.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Put Eggplant in Basket</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Libero -->
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Libero</span>
+        </button>
+      </div>
+      <div class="video-panel">
+        <!-- Libero-Spatial -->
+        <h3 class="title is-4 mt-4">Libero-Spatial Tasks</h3>
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/spatial/bowl_cabinet_on_plate.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Bowl: Cabinet → Plate</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/spatial/bowl_cookie_box_on_plate.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Bowl: Cookie Box → Plate</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/spatial/bowl_drawer_on_plate.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Bowl: Drawer → Plate</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/spatial/bowl_stove_on_plate.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Bowl: Stove → Plate</p>
+          </div>
+        </div>
+
+        <!-- Libero-Object -->
+        <h3 class="title is-4 mt-4">Libero-Object Tasks</h3>
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/object/alphabet_soup_in_basket.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Alphabet Soup in Basket</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/object/chocolate_in_basket.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Chocolate in Basket</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/object/orange_juice_in_basket.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Orange Juice in Basket</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/object/tomato_sauce_in_basket.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Tomato Sauce in Basket</p>
+          </div>
+        </div>
+
+        <!-- Libero-Goal -->
+        <h3 class="title is-4 mt-4">Libero-Goal Tasks</h3>
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/goal/bowl_in_top_drawer.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Bowl in Top Drawer</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/goal/open_middle_drawer.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Open Middle Drawer</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/goal/turn_on_stove.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Turn On Stove</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/goal/wine_bottle_on_rack.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Wine Bottle on Rack</p>
+          </div>
+        </div>
+
+        <!-- Libero-Long -->
+        <h3 class="title is-4 mt-4">Libero-Long Tasks</h3>
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/long/alphabet_soup_and_tomato_sauce_in_basket.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Alphabet Soup &amp; Tomato Sauce in Basket</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/long/bowl_in_bottom_drawer_and_close.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Bowl in Bottom Drawer &amp; Close</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/long/turn_on_stove_and_put_moka_pot.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Turn On Stove &amp; Put Moka Pot</p>
+          </div>
+          <div class="column is-one-quarter">
+            <video controls width="100%">
+              <source src="static/videos/Libero/long/yellow_white_mug_in_microwave_and_close.mp4" type="video/mp4">
+            </video>
+            <p class="is-size-6">Yellow/White Mug in Microwave &amp; Close</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mikasa-Robo -->
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Mikasa-Robo</span>
+        </button>
+      </div>
+      <div class="video-panel mikasa-video-panel">
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Mikasa_Robo/InterceptMedium.mp4" type="video/mp4"></video><p class="is-size-6">Intercept Medium</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Mikasa_Robo/RememberColor3.mp4" type="video/mp4"></video><p class="is-size-6">Remember Color 3</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Mikasa_Robo/RememberColor5.mp4" type="video/mp4"></video><p class="is-size-6">Remember Color 5</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Mikasa_Robo/RememberColor9.mp4" type="video/mp4"></video><p class="is-size-6">Remember Color 9</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Mikasa_Robo/ShellGameTouch.mp4" type="video/mp4"></video><p class="is-size-6">Shell Game Touch</p></div>
+        </div>
+      </div>
+
+      <!-- Calvin -->
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Calvin</span>
+        </button>
+      </div>
+      <div class="video-panel calvin-video-panel">
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/01-push_pink_block_right-move_slider_left-turn_off_led-push_into_drawer-lift_pink_block_drawer.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 01</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/02-rotate_blue_block_right-move_slider_right-lift_red_block_slider-place_in_slider-turn_off_lightbulb.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 02</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/03-turn_on_led-open_drawer-lift_pink_block_slider-place_in_drawer-lift_blue_block_table.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 03</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/04-rotate_red_block_left-lift_pink_block_slider-stack_block-unstack_block-lift_red_block_table.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 04</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/05-lift_blue_block_slider-place_in_drawer-move_slider_left-rotate_red_block_right-lift_blue_block_drawer.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 05</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/06-open_drawer-lift_pink_block_table-place_in_slider-turn_on_lightbulb-rotate_blue_block_left.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 06</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/07-rotate_pink_block_left-close_drawer-turn_on_led-move_slider_left-lift_red_block_slider.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 07</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Calvin/08-move_slider_right-lift_red_block_table-place_in_drawer-rotate_blue_block_left-turn_off_led.mp4" type="video/mp4"></video><p class="is-size-6">Calvin Sequence 08</p></div>
+        </div>
+      </div>
+
+      <!-- Libero-Plus -->
+      <div class="video-toggle-row">
+        <button class="video-toggle" type="button" aria-expanded="false">
+          <span class="video-toggle-icon" aria-hidden="true"></span>
+          <span class="video-toggle-label">Libero-Plus</span>
+        </button>
+      </div>
+      <div class="video-panel libero-plus-video-panel">
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/background_textures_1.mp4" type="video/mp4"></video><p class="is-size-6">Background Textures 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/background_textures_2.mp4" type="video/mp4"></video><p class="is-size-6">Background Textures 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/background_textures_3.mp4" type="video/mp4"></video><p class="is-size-6">Background Textures 3</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/camera_viewpoints_1.mp4" type="video/mp4"></video><p class="is-size-6">Camera Viewpoints 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/camera_viewpoints_2.mp4" type="video/mp4"></video><p class="is-size-6">Camera Viewpoints 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/language_instructions_1.mp4" type="video/mp4"></video><p class="is-size-6">Language Instructions 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/language_instructions_2.mp4" type="video/mp4"></video><p class="is-size-6">Language Instructions 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/light_conditions_1.mp4" type="video/mp4"></video><p class="is-size-6">Light Conditions 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/light_conditions_2.mp4" type="video/mp4"></video><p class="is-size-6">Light Conditions 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/objects_layout_1.mp4" type="video/mp4"></video><p class="is-size-6">Objects Layout 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/objects_layout_2.mp4" type="video/mp4"></video><p class="is-size-6">Objects Layout 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/robot_initial_states_1.mp4" type="video/mp4"></video><p class="is-size-6">Robot Initial States 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/robot_initial_states_2.mp4" type="video/mp4"></video><p class="is-size-6">Robot Initial States 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/sensor_noise_1.mp4" type="video/mp4"></video><p class="is-size-6">Sensor Noise 1</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/sensor_noise_2.mp4" type="video/mp4"></video><p class="is-size-6">Sensor Noise 2</p></div>
+          <div class="column is-one-quarter"><video controls width="100%"><source src="static/videos/Libero_Plus/sensor_noise_3.mp4" type="video/mp4"></video><p class="is-size-6">Sensor Noise 3</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section section-anchor" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{shi2025memoryvla,
+  title={MemoryVLA: Perceptual-Cognitive Memory in Vision-Language-Action Models for Robotic Manipulation},
+  author={Shi, Hao and Xie, Bin and Liu, Yingfei and Sun, Lin and Liu, Fengrong and Wang, Tiancai and Zhou, Erjin and Fan, Haoqiang and Zhang, Xiangyu and Huang, Gao},
+  journal={arXiv preprint arXiv:2508.19236},
+  year={2025}
+}
+    </code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website refers to <a
+              href="https://github.com/nerfies/nerfies.github.io">nerfies</a>, and
+            is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function playPanelVideos(panel) {
+      panel.querySelectorAll('video').forEach(function (video) {
+        video.muted = true;
+        video.play().catch(function () {});
+      });
+    }
+
+    function pausePanelVideos(panel) {
+      panel.querySelectorAll('video').forEach(function (video) {
+        video.pause();
+        video.currentTime = 0;
+      });
+    }
+
+    document.querySelectorAll('.video-toggle').forEach(function (button) {
+      if (button.dataset.bound === 'true') {
+        return;
+      }
+
+      button.dataset.bound = 'true';
+      button.addEventListener('click', function () {
+        var panel = button.closest('.video-toggle-row').nextElementSibling;
+        var isOpen = button.classList.toggle('is-active');
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+        if (panel && panel.classList.contains('video-panel')) {
+          panel.classList.toggle('is-open', isOpen);
+          if (isOpen) {
+            playPanelVideos(panel);
+          } else {
+            pausePanelVideos(panel);
+          }
+        }
+      });
+    });
+
+    function formatCalvinTask(task) {
+      return task
+        .split('_')
+        .map(function (word) {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
+    }
+
+    document.querySelectorAll('.calvin-video-panel .column').forEach(function (card) {
+      var source = card.querySelector('source');
+      var caption = card.querySelector('p');
+      if (!source || !caption) {
+        return;
+      }
+
+      var filename = source.getAttribute('src').split('/').pop().replace(/\.mp4$/i, '');
+      var tasks = filename.replace(/^\d+-/, '').split('-').map(formatCalvinTask);
+      caption.innerHTML = tasks.join('<span class="calvin-task-arrow">&rarr;</span>');
+    });
+  });
+</script>
+</body>
+</html>
