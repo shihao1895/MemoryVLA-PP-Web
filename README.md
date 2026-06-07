@@ -1,5 +1,5 @@
 # MemoryVLA
-This is the repository that contains source code for the [MemoryVLA++ website](https://shihao1895.github.io/MemoryVLA-Plus-Plus-Web).
+This is the repository that contains source code for the [MemoryVLA++ website](https://shihao1895.github.io/MemoryVLA-PP-Web).
 
 # Thanks
 This is the repository is heavily borrowed from <a href="https://github.com/nerfies/nerfies.github.io">nerfies</a>. Thanks for their wonderful work!
