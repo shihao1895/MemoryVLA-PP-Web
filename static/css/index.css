@@ -382,6 +382,20 @@ body {
   object-fit: initial;
 }
 
+.imagination-video-panel video {
+  aspect-ratio: auto !important;
+  background: transparent;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: initial;
+}
+
+.imagination-video-panel .column.is-one-quarter {
+  flex: none;
+  justify-content: flex-start;
+  width: 33.3333%;
+}
+
 .mikasa-video-panel .column.is-one-quarter {
   flex: none;
   justify-content: flex-start;
@@ -389,6 +403,7 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+  .imagination-video-panel .column.is-one-quarter,
   .mikasa-video-panel .column.is-one-quarter {
     width: 100%;
   }
