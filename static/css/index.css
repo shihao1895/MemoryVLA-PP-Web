@@ -452,6 +452,17 @@ body {
 
 }
 
+@media screen and (min-width: 900px) and (max-width: 1279px) {
+  .section-anchor > .columns > .column > div[style*="width"],
+  .video-section .video-section-heading,
+  .video-section .video-toggle-row,
+  .video-section .video-panel,
+  #abstract .container.is-max-desktop,
+  #BibTeX .container.is-max-desktop {
+    width: min(1120px, calc(100vw - 15.5rem)) !important;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .section-anchor > .columns > .column > div[style*="width"],
   .video-section .video-section-heading,
